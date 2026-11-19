@@ -1,0 +1,16 @@
+{
+  "name": "ciber-shop",
+  "version": "1.0.0",
+  "description": "App de demo para clase: vulnerabilidades DELIBERADAS para practicar revision de codigo seguro (modulo 5023). NO usar nunca en produccion.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "lodash": "4.17.15",
+    "jsonwebtoken": "8.5.1",
+    "axios": "0.19.2",
+    "moment": "2.24.0"
+  }
+}

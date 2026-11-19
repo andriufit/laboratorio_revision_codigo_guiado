@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Entornos y secretos (aunque aquí están a propósito, no es hábito a enseñar)
+.env
+*.key
+
+# Informes y artefactos de herramientas
+*.html.report
+zap-report*
+informe-*.html
+.sarif
+
+# Sistema
+Thumbs.db
+.DS_Store

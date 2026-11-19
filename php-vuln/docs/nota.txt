@@ -1,0 +1,5 @@
+NOTA INTERNA (no visible para clientes)
+Reunion de proveedores el dia 23. No olvidar renovar el contrato de
+mantenimiento antes de fin de mes.
+
+Documento de prueba para descarga.php?archivo=docs/nota.txt

@@ -1,0 +1,5 @@
+NOTA INTERNA (no visible para clientes)
+Se confirma la reunion de la semana 24. La tarifa de coste real del
+producto teclado sigue siendo la que se pacto en enero.
+
+Documento de prueba para la ruta /fichero?ruta=docs/nota.txt
