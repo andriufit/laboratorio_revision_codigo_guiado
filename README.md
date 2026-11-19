@@ -153,7 +153,7 @@ semgrep --version                  # ✓ nº versión
 ```powershell
 # desde la raíz del repo:
 semgrep scan --config p/javascript --config p/secrets node-vuln --metrics=off
-semgrep scan --config p/php                   php-vuln  --metrics=off
+semgrep scan --config p/php php-vuln  --metrics=off
 ```
 
 Si pide login: `semgrep login` una vez (gratis, con GitHub/Google).
@@ -201,7 +201,7 @@ Guarda los resmenes: los usarás al comparar herramientas.
 2. Arranca SonarQube Community Build (la primera vez descarga ~1 GB y tarda 1–2 min en levantarse):
 
 ```powershell
-docker run -d --name sonarqube -p 9000:9000 sonarsource/sonarqube:latest
+docker run -d --name sonarqube -p 9000:9000 sonarqube:community
 docker logs -f sonarqube        # espera a " SonarQube is operational " y Ctrl+C
 ```
 
@@ -289,7 +289,7 @@ Explotación rápida de referencia: login con email `ana@demo.es' -- ` (o `' OR 
 |---|---|
 | `EADDRINUSE :3000` (o `:3010`) | Otra app ocupa el puerto: ciérrala o cambia `PORT` en `server.js`. |
 | MySQL no arranca en XAMPP | Revisa el log del panel; suele ser el 3306 ocupado (skype/MariaDB local). |
-| `semgrep: command not found` | Reinicia la terminal tras instalar; o usa `python3 -m semgrep scan …`. |
+| `semgrep: no se encuentra` después de instalar bien | El ejecutable quedó en una carpeta `Scripts` sin PATH (típico con pyenv-win o Python de la Store): añade esa carpeta al PATH de usuario y **reabre la terminal**. Mientras tanto `python3 -m semgrep scan …` funciona igual (aviso de deprecación aparte). |
 | Semgrep falla en Windows | Plan B Docker (sección Paso 3). |
 | SonarQube no arranca / no carga | Espera 1–2 min y mira `docker logs sonarqube`; necesita ~2 GB libres. |
 | El scanner no conecta con SonarQube | Dentro del contenedor, `localhost` es el propio contenedor: usa `host.docker.internal` (así está en el comando). |
