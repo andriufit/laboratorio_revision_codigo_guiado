@@ -13,7 +13,7 @@ const app = express();
 const PORT = 3000;
 
 const JWT_SECRET = 'changeme_clave_super_secreta_123';
-const API_KEY = 'sk_live_51H8xQ2eZvKYlo2C9XaBcDeF';
+const API_KEY = 'api_pagos_51H8xQ2eZvKYlo2C9XaBcDeF';
 const DB_PASSWORD = 'SysAdmin2024!';
 
 const USUARIOS = [

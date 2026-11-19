@@ -1,6 +1,6 @@
 # Laboratorio — Revisión de código seguro SIN IA (Módulo 5023)
 
-> Material del Máster FP en Ciberseguridad · módulo 5023 *Puesta en producción segura*.
+> Material del Máster FP Ciberseguridad · módulo 5023 *Puesta en producción segura*.
 > Este repositorio contiene las dos aplicaciones víctima usadas en la **sesión guiada** de revisión de
 > código y la guía paso a paso para montarlo tú mismo en tu equipo y repetirlo con calma.
 >
@@ -15,7 +15,6 @@
 ```
 lab-revision-codigo-segura/
 ├── README.md            ← este documento (montaje + referencia de herramientas)
-├── mis-reglas.yaml      ← reglas Semgrep escritas en clase (fuente → sumidero)
 ├── node-vuln/           ← App Node.js "ciber-shop" (tienda de demo, 9 fallos)
 │   ├── package.json     ← dependencias de 2020 con vulnerabilidades publicadas (SCA)
 │   ├── server.js        ← Express con fallos en el código (SAST/DAST)
@@ -54,15 +53,7 @@ central es que trabajan **por capas**.
 | **Fortalezas** | Dos análisis (dependencias + código) con una sola herramienta; informe con severidad, CVE, ruta del flujo y parche sugerido; exit code apto para pipelines; el motor de código (DeepCode) es de los mejores en flujo fuente→sumidero. |
 | **Carencias** | Necesita **cuenta y conexión** (el código se analiza en su nube → política de confidencialidad antes de usarlo con código de empresa). Motor cerrado, no puedes escribir tus propias reglas. Plan gratuito: dependencias ilimitadas (1 usuario) pero ~100 análisis de código (Snyk Code)/mes. |
 
-### 2.3 Semgrep — SAST open source
-
-| | |
-|---|---|
-| **Qué hace** | Análisis estático con **reglas declarativas**: una regla YAML define fuente, sumidero y (opcionalmente) sanitizadores, y el motor encuentra TODAS las ocurrencias en el código. Los packs públicos (`p/javascript`, `p/php`, `p/secrets`…) traen miles de reglas de la comunidad. |
-| **Fortalezas** | La más didáctica: en 6 líneas escribes tu propia regla y entiendes **cómo piensa un SAST**. Rapidísimo, funciona local (el código no sale de tu máquina), reglas propias mantenibles por el equipo, corriendo en CI es el complemento determinista perfecto (pág. 9 del PDF). |
-| **Carencias** | Su cobertura depende de las reglas disponibles: los packs pillan mucho pero no todo (y las reglas comunitarias varían en calidad → falsos positivos). Sin dashboard/servidor central en la versión OSS. En Windows se instala por `pip` (versiones recientes lo soportan; si tu versión falla, hay imagen Docker oficial como plan B). |
-
-### 2.4 SonarQube Community Build — SAST enterprise + calidad de código
+### 2.3 SonarQube Community Build — SAST enterprise + calidad de código
 
 | | |
 |---|---|
@@ -70,7 +61,7 @@ central es que trabajan **por capas**.
 | **Fortalezas** | El portal y la noción de **hotspot** ("aquí puede haber problema, un humano decide") son oro para aprender triage; 21 lenguajes; gate integrable en pipelines; historia de proyectos y comparativas entre análisis. |
 | **Carencias** | La instalación es la más pesada del laboratorio (Java/JVM vía Docker, ~2 GB de RAM, arranque lento). El análisis de flujo de datos profundo (taint avanzado) y varias funciones de seguridad (informes OWASP/CWE, detección de secretos completa) quedan en **ediciones de pago** — la Community te enseña el "cómo se gestiona", no el máximo poder. |
 
-### 2.5 OWASP ZAP — DAST (Dynamic Application Security Testing)
+### 2.4 OWASP ZAP — DAST (Dynamic Application Security Testing)
 
 | | |
 |---|---|
@@ -78,21 +69,20 @@ central es que trabajan **por capas**.
 | **Fortalezas** | El único que valida la app desplegada real (encuentra lo que el código estático no puede: cabeceras ausentes, X-Powered-By, cookies sin banderas, XSS que solo se ve al servir la respuesta). Gratuito, con GUI muy visual para clase y modo CLI para CI. |
 | **Carencias** | **Solo ve lo que es accesible desde fuera** (pág. 3 del PDF): no descubre secretos en el código, ni fallos de lógica interna blindados, ni dependencias. Depende del crawl: endpoints no enlazados no se prueban salvo que los alcances manualmente. Falsos positivos en lógica de negocio. |
 
-### 2.6 Software de entorno (infraestructura del laboratorio)
+### 2.5 Software de entorno (infraestructura del laboratorio)
 
 | Software | Qué es aquí |
 |---|---|
 | **Node.js + npm** | Runtime y gestor de paquetes de la app `node-vuln`. Necesitas la LTS (20/22). Limitación natural: versiones antiguas de paquetes no compilan a veces en Node muy nuevo — en este lab todo corre en Node 22 sin problema. |
 | **XAMPP** | Apache + PHP + MariaDB + phpMyAdmin en un clic para la app `php-vuln`. Ojo a su naturaleza: es entorno de desarrollo — root sin contraseña es lo normal aquí y **jamás** en un servidor real. |
-| **Python** | Lo necesita Semgrep para instalarse por `pip`. Cualquier 3.10+ sirve. |
-| **Docker Desktop** | Ejecuta SonarQube y (plan B) Semgrep sin instalarlos "de verdad" en tu Windows. Requiere WSL2; el icono de la ballena debe estar verde antes de usar SonarQube. |
+| **Docker Desktop** | Ejecuta SonarQube sin instalarlo "de verdad" en tu Windows. Requiere WSL2; el icono de la ballena debe estar verde antes de usarlo. |
 | **Git** | Para clonar este repositorio y, en clase, para ver los **diffs** al arreglar cada fallo (el commit de la corrección es parte de la evidencia). |
 
 ---
 
 ## 3. Instalación paso a paso
 
-> Tiempo total estimado: **45–60 min** la primera vez. Haz las verificaciones ✓ de cada paso antes de seguir.
+> Tiempo total estimado: **40–50 min** la primera vez. Haz las verificaciones ✓ de cada paso antes de seguir.
 
 ### Paso 0 — (Opcional) Git
 
@@ -123,7 +113,7 @@ Deja esta consola abierta (el servidor vive ahí). Para pararla: `Ctrl+C`.
 
 1. Descarga de <https://www.apachefriends.org> e instala en `C:\xampp` (por defecto).
 2. Abre el **XAMPP Control Panel** y pulsa *Start* en **Apache** y **MySQL**.
-3. Copia la app al directorio web e import la base de datos:
+3. Copia la app al directorio web e importa la base de datos:
 
 ```powershell
 Copy-Item -Recurse "<ruta\de\este\repo>\php-vuln" "C:\xampp\htdocs\ciber"
@@ -138,38 +128,7 @@ C:\xampp\mysql\bin\mysql.exe -u root < "C:\xampp\htdocs\ciber\setup.sql"
 La base de datos creada es `ciber` (tabla `usuarios` con 1 usuario). Si MySQL no arranca por conflicto
 de puertos, mira el log en el propio panel (suele ser el 3306 ocupado por otra MariaDB).
 
-### Paso 3 — Python + Semgrep (SAST)
-
-1. Python si no lo tienes: <https://www.python.org/downloads/> (marca "Add to PATH").
-2. Instala y verifica:
-
-```powershell
-python3 -m pip install semgrep     # o: pipx install semgrep (recomendado si pip se queja)
-semgrep --version                  # ✓ nº versión
-```
-
-3. Primer escaneo con packs públicos:
-
-```powershell
-# desde la raíz del repo:
-semgrep scan --config p/javascript --config p/secrets node-vuln --metrics=off
-semgrep scan --config p/php php-vuln  --metrics=off
-```
-
-Si pide login: `semgrep login` una vez (gratis, con GitHub/Google).
-
-4. Y con **las reglas que escribimos en clase** (`mis-reglas.yaml`):
-
-```powershell
-semgrep scan --config mis-reglas.yaml node-vuln php-vuln --metrics=off
-```
-
-✓ Deben salir hallazgos marcados como `nodo-path-traversal`, `php-sqli-concatenado`, etc.
-
-> **Plan B Windows:** si la instalación nativa falla, usa el contenedor:
-> `docker run --rm -v "${PWD}:/src" semgrep/semgrep semgrep scan --config p/javascript /src`
-
-### Paso 4 — Snyk (SCA enterprise + SAST)
+### Paso 3 — Snyk (SCA enterprise + SAST)
 
 1. Crea cuenta gratuita en <https://app.snyk.io/signup> (login con GitHub o Google).
 2. Instala el CLI y autentícate (abre el navegador una vez):
@@ -191,9 +150,9 @@ snyk code test        # SAST sobre PHP
 ```
 
 ✓ En `node-vuln` verás Path Traversal y credenciales en duro entre los hallazgos de código.
-Guarda los resmenes: los usarás al comparar herramientas.
+Guarda los resúmenes: los usarás al comparar herramientas.
 
-### Paso 5 — Docker Desktop + SonarQube (SAST enterprise)
+### Paso 4 — Docker Desktop + SonarQube (SAST enterprise)
 
 1. Docker Desktop: <https://www.docker.com/products/docker-desktop/> (activa WSL2 si te lo pide y
    reinicia). ✓ Verifica con `docker --version` y que la ballena está en verde.
@@ -221,7 +180,7 @@ docker run --rm -e SONAR_HOST_URL="http://host.docker.internal:9000" -e SONAR_TO
 **Quality Gate**. En hotspots busca la credencial en duro y el uso de MD5.
 Para apagar/encender el servidor más adelante: `docker stop sonarqube` / `docker start sonarqube`.
 
-### Paso 6 — OWASP ZAP (DAST)
+### Paso 5 — OWASP ZAP (DAST)
 
 1. Descarga el instalador Windows de <https://www.zaproxy.org/download/> (o el "cross-platform" si
    prefieres Java aparte).
@@ -241,8 +200,6 @@ Para apagar/encender el servidor más adelante: `docker stop sonarqube` / `docke
 | **SCA** | `npm audit` (en la carpeta) | — (sin gestor de paquetes) |
 | **Snyk SCA** | `snyk test` | — |
 | **Snyk SAST** | `snyk code test` | `snyk code test` |
-| **Semgrep packs** | `semgrep scan --config p/javascript --config p/secrets node-vuln --metrics=off` | `semgrep scan --config p/php ... php-vuln` |
-| **Semgrep propias** | `semgrep scan --config mis-reglas.yaml node-vuln php-vuln --metrics=off` | (incluido) |
 | **SonarQube** | scanner `-v ...\node-vuln:/usr/src` → proyecto `ciber-node` | scanner `-v ...\php-vuln:/usr/src` → `ciber-php` |
 | **ZAP** | Automated Scan `http://localhost:3000` | `http://localhost/ciber/…` |
 | **Arrancar app** | `cd node-vuln && npm start` | XAMPP: Apache + MySQL en Start |
@@ -289,8 +246,6 @@ Explotación rápida de referencia: login con email `ana@demo.es' -- ` (o `' OR 
 |---|---|
 | `EADDRINUSE :3000` (o `:3010`) | Otra app ocupa el puerto: ciérrala o cambia `PORT` en `server.js`. |
 | MySQL no arranca en XAMPP | Revisa el log del panel; suele ser el 3306 ocupado (skype/MariaDB local). |
-| `semgrep: no se encuentra` después de instalar bien | El ejecutable quedó en una carpeta `Scripts` sin PATH (típico con pyenv-win o Python de la Store): añade esa carpeta al PATH de usuario y **reabre la terminal**. Mientras tanto `python3 -m semgrep scan …` funciona igual (aviso de deprecación aparte). |
-| Semgrep falla en Windows | Plan B Docker (sección Paso 3). |
 | SonarQube no arranca / no carga | Espera 1–2 min y mira `docker logs sonarqube`; necesita ~2 GB libres. |
 | El scanner no conecta con SonarQube | Dentro del contenedor, `localhost` es el propio contenedor: usa `host.docker.internal` (así está en el comando). |
 | `snyk auth` no abre navegador | Copia la URL que imprime el CLI al navegador con tu sesión. |
